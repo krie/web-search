@@ -38,7 +38,6 @@ class pageRank:
         pi = []
         for i in self.websiteMatrix:
             pi.append(1 / len(self.websiteMatrix))
-        print(pi)
 
         # PageRank berechnen
         delta = 1
