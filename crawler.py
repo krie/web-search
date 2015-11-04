@@ -30,7 +30,15 @@ class crawler():
                 #print('Link zu {} in url: {} gefunden'.format(link.get('href'), url))
                 newUrl = urljoin(url, link.get('href'))
                 self.uebergangsListe[url][newUrl] = 1
-                if newUrl not in self.urlSetDone:
+                neueUrl = True
+                for doneUrl in self.urlSetDone:
+                    if(newUrl == doneUrl):
+                        neueUrl = False
+                if(neueUrl):
+                    for todoUrl in self.urlset:
+                        if(newUrl == todoUrl):
+                            neueUrl = False
+                if(neueUrl):
                     self.urlset.append(newUrl)
     def getUebergangsMatrix(self):
         matrix = np.zeros(shape=(len(self.urlSetDone), len(self.urlSetDone)));
@@ -42,6 +50,3 @@ class crawler():
                 linkIndex = list(geordneteListe.keys()).index(link)
                 matrix[seiteIndex, linkIndex] = value
         print(matrix)
-mycrawler = crawler("seed.dat")
-mycrawler.crawl()
-mycrawler.getUebergangsMatrix()
