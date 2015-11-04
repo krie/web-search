@@ -49,4 +49,4 @@ class crawler():
             for link, value in links.items():
                 linkIndex = list(geordneteListe.keys()).index(link)
                 matrix[seiteIndex, linkIndex] = value
-        print(matrix)
+        return matrix
