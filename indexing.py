@@ -37,14 +37,10 @@ class indexer():
             self.orderedIndexDict = col.OrderedDict(sorted(self.indexDict.items()))
             #print(self.indexDict)
 
-mycrawler = crawler("seed.dat")
-mycrawler.crawl()
-#mycrawler.getUebergangsMatrix()
-
-indexer = indexer(mycrawler.urlSetDone)
-indexer.runIndexing()
-for word, loc in indexer.orderedIndexDict.items():
-    doc_freq = 0
-    for url, vorkommen in loc.items():
-        doc_freq += vorkommen
-    print("{0: <15} {1: <3}:  -> {2}".format(word, doc_freq, loc))
+    def outputIndexToFile(self):
+        output_file = open('index.dat', 'w+')
+        for word, loc in self.orderedIndexDict.items():
+            doc_freq = 0
+            for url, vorkommen in loc.items():
+                doc_freq += vorkommen
+            output_file.write("{0: <15} {1: <3}:  -> {2}\n".format(word, doc_freq, loc))

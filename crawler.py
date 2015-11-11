@@ -13,6 +13,7 @@ class crawler():
         self.urlSetDone = []     # Bereits besuchte URLs
         self.urlset = []
         self.uebergangsListe = col.defaultdict(dict)
+
     def crawl(self):
         with open("seed.dat", "r") as fileInput:
             alist = fileInput.read().splitlines()
@@ -40,6 +41,7 @@ class crawler():
                             neueUrl = False
                 if(neueUrl):
                     self.urlset.append(newUrl)
+
     def getUebergangsMatrix(self):
         matrix = np.zeros(shape=(len(self.urlSetDone), len(self.urlSetDone)));
         geordneteListe = col.OrderedDict(sorted(self.uebergangsListe.items()))
