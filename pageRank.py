@@ -39,14 +39,18 @@ class pageRank:
         for i in self.websiteMatrix:
             pi.append(1 / len(self.websiteMatrix))
 
+        output_file = open('pageRank.dat', 'w+')
+
         # PageRank berechnen
         delta = 1
         l = 0
         while delta > 0.04:
-            print("page-rank step", l)
-            print(pi)
+            output_file.write("PageRank Step {0}:\n".format(l))
+            for elem in pi:
+                output_file.write("{0:.5f} ".format(elem))
             if(l != 0):
-                print("Delta: ", delta)
+                output_file.write("\nDelta: {0:.5f}".format(delta))
+            output_file.write("\n\n")
 
             piOld = pi.copy()
             for i in range(0, len(pi)):
@@ -59,6 +63,8 @@ class pageRank:
                 delta += abs(pi[k] - piOld[k])
             l += 1
 
-        print("page-rank step", l)
-        print(pi)
-        print("Delta: ", delta)
+        output_file.write("PageRank Step {0}:\n".format(l))
+        for elem in pi:
+            output_file.write("{0:.5f}\t".format(elem))
+        if(l != 0):
+            output_file.write("\nDelta: {0:.5f}\n".format(delta))
