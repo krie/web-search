@@ -23,7 +23,10 @@ myRank.calcRank()
 myIndexer = indexer(mycrawler.getFinalUrlset())
 myIndexer.runIndexing()
 myIndexer.outputIndexToFile()
-
-index = myIndexer.indexDict
+print("\n")
+print("Index: \n")
+#print(myIndexer.getIndexMatrix())
+print("\n")
+index = myIndexer.getIndexMatrix()
 myScoring = scoring(len(mycrawler.getFinalUrlset()), index)
 myScoring.calcScoreForQuery("classification tokens")
