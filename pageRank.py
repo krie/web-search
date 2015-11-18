@@ -47,9 +47,9 @@ class pageRank:
         while delta > 0.04:
             output_file.write("PageRank Step {0}:\n".format(l))
             for elem in pi:
-                output_file.write("{0:.5f} ".format(elem))
+                output_file.write("{0:.4f} ".format(elem))
             if(l != 0):
-                output_file.write("\nDelta: {0:.5f}".format(delta))
+                output_file.write("\nDelta: {0:.4f}".format(delta))
             output_file.write("\n\n")
 
             piOld = pi.copy()
@@ -65,6 +65,6 @@ class pageRank:
 
         output_file.write("PageRank Step {0}:\n".format(l))
         for elem in pi:
-            output_file.write("{0:.5f}\t".format(elem))
+            output_file.write("{0:.4f}\t".format(elem))
         if(l != 0):
-            output_file.write("\nDelta: {0:.5f}\n".format(delta))
+            output_file.write("\nDelta: {0:.4f}\n".format(delta))
