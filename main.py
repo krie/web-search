@@ -4,15 +4,6 @@ from indexing import indexer
 from scoring import scoring
 
 
-testMatrix = [[0, 1, 1, 1, 0, 0, 0, 0],
-              [1, 0, 1, 1, 1, 0, 0, 0],
-              [1, 1, 0, 1, 1, 0, 0, 0],
-              [1, 1, 1, 0, 1, 0, 0, 0],
-              [0, 0, 0, 1, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 1, 0],
-              [0, 0, 0, 0, 0, 1, 0, 0],
-              [0, 0, 0, 0, 0, 0, 0, 0]]
-
 mycrawler = crawler("seed.dat")
 mycrawler.crawl()
 
@@ -26,4 +17,11 @@ myIndexer.outputIndexToFile()
 
 index = myIndexer.indexDict
 myScoring = scoring(len(mycrawler.getFinalUrlset()), index)
-myScoring.calcScoreForQuery("classification tokens")
+
+again = "j"
+while again == "j":
+    queryString = input("Suchbegriff(e): ")
+    myScoring.calcScoreForQuery(queryString)
+
+    again = input("Neue Suche? j/n: ")
+    print()
