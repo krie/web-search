@@ -1,11 +1,15 @@
+import operator
+
 __author__ = 'julian'
 import math
+import collections as col
+
 class scoring:
     def __init__(self, n, indexList):
         self.n = n
         self.indexList = indexList
         self.weigthMatrix = indexList
-        self.docLength = [0] * n
+        self.docLength = {}
         self.calcWeightMatrix()
         self.calcDocLength()
 
@@ -16,8 +20,10 @@ class scoring:
         return len(self.indexList[t])
 
     def weight(self, t, d):
-        return (1 + math.log10(self.termFreq(t, d))) * math.log10(self.n/self.docFreq(t))
-
+        weightVal = 1 + math.log10(self.termFreq(t, d))
+        weightVal = weightVal * math.log10(self.n/self.docFreq(t))
+        #return ((1 + math.log10(self.termFreq(t, d))) * math.log10(self.n/self.docFreq(t)))
+        return weightVal
 
     def calcWeightMatrix(self):
         for wort, docs in self.indexList.items():
@@ -27,16 +33,20 @@ class scoring:
     def calcDocLength(self):
         for wort, docs in self.weigthMatrix.items():
             for doc, weight in docs.items():
-                self.docLength[doc] = self.docLength[doc] + weight * weight
+                if doc in self.docLength:
+                    self.docLength[doc] +=  weight * weight
+                else:
+                    self.docLength[doc] =  weight * weight
 
 
     def calcScoreForQuery(self, query):
-        score = [0] * self.n
+        score = {}
         terms = query.split(" ")
         for term in terms:
             for doc, weight in self.weigthMatrix[term].items():
                 score[doc] = weight * 1
-        print(score)
+        orderedScore = sorted(score.items(), key=operator.itemgetter(1))
+        print(orderedScore)
 
 
 

@@ -52,3 +52,7 @@ class crawler():
                 linkIndex = list(geordneteListe.keys()).index(link)
                 matrix[seiteIndex, linkIndex] = value
         return matrix
+
+    def getFinalUrlset(self):
+        urlsetCopy = self.urlSetDone[:]
+        return urlsetCopy

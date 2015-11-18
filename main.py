@@ -20,10 +20,10 @@ myMatrix = mycrawler.getUebergangsMatrix()
 myRank = pageRank(websiteMatrix=myMatrix)
 myRank.calcRank()
 
-myIndexer = indexer(mycrawler.urlSetDone)
+myIndexer = indexer(mycrawler.getFinalUrlset())
 myIndexer.runIndexing()
 myIndexer.outputIndexToFile()
 
 index = myIndexer.indexDict
-myScoring = scoring(len(mycrawler.urlSetDone), index)
-myScoring.calcScoreForQuery("and")
+myScoring = scoring(len(mycrawler.getFinalUrlset()), index)
+myScoring.calcScoreForQuery("classification tokens")
