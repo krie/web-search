@@ -41,7 +41,11 @@ class pageRank:
 
         # PageRank berechnen
         delta = 1
+        l = 0
         while delta > 0.04:
+            print("page-rank step", l)
+            print(pi)
+
             piOld = pi.copy()
             for i in range(0, len(pi)):
                 pi[i] = 0  # pi muss zurueckgesetzt werden!
@@ -51,6 +55,5 @@ class pageRank:
             delta = 0  # delta muss zurueckgesetzt werden!
             for k in range(0, len(pi)):
                 delta += abs(pi[k] - piOld[k])
+            l += 1
 
-        print(self.websiteMatrix)
-        print(pi)
