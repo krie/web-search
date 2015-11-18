@@ -45,6 +45,8 @@ class pageRank:
         while delta > 0.04:
             print("page-rank step", l)
             print(pi)
+            if(l != 0):
+                print("Delta: ", delta)
 
             piOld = pi.copy()
             for i in range(0, len(pi)):
@@ -57,3 +59,6 @@ class pageRank:
                 delta += abs(pi[k] - piOld[k])
             l += 1
 
+        print("page-rank step", l)
+        print(pi)
+        print("Delta: ", delta)
