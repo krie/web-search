@@ -62,9 +62,12 @@ class pageRank:
             for k in range(0, len(pi)):
                 delta += abs(pi[k] - piOld[k])
             l += 1
-
+        iter = 1
+        self.ranking = {}
         output_file.write("PageRank Step {0}:\n".format(l))
         for elem in pi:
             output_file.write("{0:.4f}\t".format(elem))
+            self.ranking["d0"+str(iter)+".html"] = elem
+            iter += 1
         if(l != 0):
             output_file.write("\nDelta: {0:.4f}\n".format(delta))

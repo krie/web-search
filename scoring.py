@@ -45,16 +45,23 @@ class scoring:
     def calcDocLength(self):
         for index, row in self.indexList.iterrows():
             self.docLength[index] = row.values.dot(row.values)
-        print("Doclen: {}".format(self.docLength))
 
-    def calcScoreForQuery(self, query):
+    def calcScoreForQuery(self, query, pagerank):
         score = {}
+        query = query.lower()
         terms = query.split(" ")
-        for term in terms:
-            for doc, weight in self.weigthMatrix[term].items():
-                score[doc] = weight * 1
-        orderedScore = sorted(score.items(), key=operator.itemgetter(1))
-        print(orderedScore)
+        queryWeight = []
+        for column in list(self.indexList.columns):
+            if column in terms:
+                queryWeight.append(1)
+            else:
+                queryWeight.append(0)
+        for index, row in self.indexList.iterrows():
+            if (row.values.dot(queryWeight) > 0):
+                score[index] = row.values.dot(queryWeight) / self.docLength[index] * pagerank[index];
+        orderedScore = sorted(score.items(), key=operator.itemgetter(1), reverse=True)
+        for item in orderedScore:
+            print(item)
 
 
 

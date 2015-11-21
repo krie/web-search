@@ -23,10 +23,15 @@ myRank.calcRank()
 myIndexer = indexer(mycrawler.getFinalUrlset())
 myIndexer.runIndexing()
 myIndexer.outputIndexToFile()
-print("\n")
-print("Index: \n")
-#print(myIndexer.getIndexMatrix())
-print("\n")
+
 index = myIndexer.getIndexMatrix()
 myScoring = scoring(len(mycrawler.getFinalUrlset()), index)
-myScoring.calcScoreForQuery("classification tokens")
+
+running = True
+while running:
+    eingabe = input("Nach welchen Wörtern wollen Sie suchen?:\n\t ")
+    if (eingabe == "exit"):
+        running = False
+    else:
+        myScoring.calcScoreForQuery(eingabe, myRank.ranking)
+        print("\n")
