@@ -41,7 +41,6 @@ class crawler():
                             neueUrl = False
                 if(neueUrl):
                     self.urlset.append(newUrl)
-
     def getUebergangsMatrix(self):
         matrix = np.zeros(shape=(len(self.urlSetDone), len(self.urlSetDone)));
         geordneteListe = col.OrderedDict(sorted(self.uebergangsListe.items()))
@@ -51,6 +50,14 @@ class crawler():
             for link, value in links.items():
                 linkIndex = list(geordneteListe.keys()).index(link)
                 matrix[seiteIndex, linkIndex] = value
+
+        #Matrix in Datei schreiben
+        output_file = open('uebergaenge.dat', 'w+')
+        for row in matrix:
+            for cell in row:
+                output_file.write("{0}  ".format(cell))
+            output_file.write("\n")
+
         return matrix
 
     def getFinalUrlset(self):
