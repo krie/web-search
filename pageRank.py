@@ -22,7 +22,7 @@ class pageRank:
                         self.websiteMatrix[i][j] = 1 / ones
                 else:
                     self.websiteMatrix[i][j] = 1 / len(self.websiteMatrix)
-                j += 1
+                j = j + 1
 
             # Teleportation und Daempfung berechnen
             t = 0.05  # Teleportationsrate
@@ -31,8 +31,8 @@ class pageRank:
             j = 0
             for cell in row:
                 self.websiteMatrix[i][j] = cell * d + t / len(self.websiteMatrix)
-                j += 1
-            i += 1
+                j = j + 1
+            i = i + 1
 
         # Wahrscheinlichkeitsvektor pi initialisieren
         pi = []
@@ -45,14 +45,12 @@ class pageRank:
         delta = 1
         l = 0
         while delta > 0.04:
-            # Aktuellen Step in Datei schreiben
             output_file.write("PageRank Step {0}:\n".format(l))
             for elem in pi:
                 output_file.write("{0:.4f} ".format(elem))
-            if l != 0:
+            if(l != 0):
                 output_file.write("\nDelta: {0:.4f}".format(delta))
             output_file.write("\n\n")
-
 
             piOld = pi.copy()
             for i in range(0, len(pi)):
@@ -64,10 +62,12 @@ class pageRank:
             for k in range(0, len(pi)):
                 delta += abs(pi[k] - piOld[k])
             l += 1
-
-        #Letzten Step in Datei schreiben
+        iter = 1
+        self.ranking = {}
         output_file.write("PageRank Step {0}:\n".format(l))
         for elem in pi:
             output_file.write("{0:.4f}\t".format(elem))
-        if l != 0:
+            self.ranking["d0"+str(iter)+".html"] = elem
+            iter += 1
+        if(l != 0):
             output_file.write("\nDelta: {0:.4f}\n".format(delta))

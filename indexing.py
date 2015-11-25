@@ -1,12 +1,20 @@
 __author__ = 'Alexander'
-from crawler import crawler
 from bs4 import BeautifulSoup
 import numpy as np
+import pandas as pd
+pd.set_option('display.height', 1000)
+pd.set_option('display.max_rows', 500)
+pd.set_option('display.max_columns', 500)
+pd.set_option('display.width', 1000)
 import requests
 import collections as col
 
 class indexer():
     def __init__(self, urlset):
+        self.stopWoerter = ['d01', 'd02', 'd03', 'd04', 'd05', 'd06', 'd07', 'd08',
+'a', 'also', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'do',
+'for', 'have', 'is', 'in', 'it', 'of', 'or', 'see', 'so',
+'that', 'the', 'this', 'to', 'we']
         self.urlSetDone = []
         self.urlset = urlset
         self.indexDict = col.defaultdict(dict)
@@ -30,10 +38,11 @@ class indexer():
             url = url.rsplit('/',1)[-1]
             for wort in texts:
                 if(wort != ""):
-                    try:
-                        self.indexDict[wort.lower()][url] += 1
-                    except KeyError:
-                        self.indexDict[wort.lower()][url] = 1
+                    if wort not in self.stopWoerter:
+                        try:
+                            self.indexDict[wort.lower()][url] += 1
+                        except KeyError:
+                            self.indexDict[wort.lower()][url] = 1
             self.orderedIndexDict = col.OrderedDict(sorted(self.indexDict.items()))
             #print(self.indexDict)
 
@@ -44,3 +53,7 @@ class indexer():
             for url, vorkommen in loc.items():
                 doc_freq += vorkommen
             output_file.write("{0: <15} {1: <3}:  -> {2}\n".format(word, doc_freq, loc))
+
+    def getIndexMatrix(self):
+        df = pd.DataFrame(self.orderedIndexDict).fillna(0)
+        return df

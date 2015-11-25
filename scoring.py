@@ -3,6 +3,11 @@ import operator
 __author__ = 'julian'
 import math
 import collections as col
+import pandas as pd
+pd.set_option('display.height', 1000)
+pd.set_option('display.max_rows', 500)
+pd.set_option('display.max_columns', 500)
+pd.set_option('display.width', 1000)
 
 class scoring:
     def __init__(self, n, indexList):
@@ -19,34 +24,45 @@ class scoring:
     def docFreq(self, t):
         return len(self.indexList[t])
 
-    def weight(self, t, d):
-        weightVal = 1 + math.log10(self.termFreq(t, d))
-        weightVal = weightVal * math.log10(self.n/self.docFreq(t))
-        #return ((1 + math.log10(self.termFreq(t, d))) * math.log10(self.n/self.docFreq(t)))
+    def weight(self, tf, df):
+        weightVal = 1 + math.log10(tf)
+        weightVal = weightVal * math.log10(self.n/df)
         return weightVal
 
     def calcWeightMatrix(self):
-        for wort, docs in self.indexList.items():
-            for doc, freq in docs.items():
-                self.weigthMatrix[wort][doc] = self.weight(wort, doc)
+        for column in list(self.indexList.columns):
+            index = 0
+            df = 0
+            for val in self.indexList[column]:
+                if(val > 0):
+                    df += 1
+
+            for val in self.indexList[column]:
+                if(val > 0):
+                    self.indexList[column][index] = self.weight(val, df)
+                index += 1
 
     def calcDocLength(self):
-        for wort, docs in self.weigthMatrix.items():
-            for doc, weight in docs.items():
-                if doc in self.docLength:
-                    self.docLength[doc] +=  weight * weight
-                else:
-                    self.docLength[doc] =  weight * weight
+        for index, row in self.indexList.iterrows():
+            self.docLength[index] = row.values.dot(row.values)
 
-
-    def calcScoreForQuery(self, query):
+    def calcScoreForQuery(self, query, pagerank):
         score = {}
+        query = query.lower()
         terms = query.split(" ")
-        for term in terms:
-            for doc, weight in self.weigthMatrix[term].items():
-                score[doc] = weight * 1
-        orderedScore = sorted(score.items(), key=operator.itemgetter(1))
-        print(orderedScore)
+        queryWeight = []
+        for column in list(self.indexList.columns):
+            if column in terms:
+                queryWeight.append(1)
+            else:
+                queryWeight.append(0)
+        for index, row in self.indexList.iterrows():
+            if (row.values.dot(queryWeight) > 0):
+                score[index] = row.values.dot(queryWeight) / self.docLength[index] * pagerank[index];
+        orderedScore = sorted(score.items(), key=operator.itemgetter(1), reverse=True)
+        for item in orderedScore:
+            print(item)
+
 
 
 

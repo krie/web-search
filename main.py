@@ -4,6 +4,15 @@ from indexing import indexer
 from scoring import scoring
 
 
+testMatrix = [[0, 1, 1, 1, 0, 0, 0, 0],
+              [1, 0, 1, 1, 1, 0, 0, 0],
+              [1, 1, 0, 1, 1, 0, 0, 0],
+              [1, 1, 1, 0, 1, 0, 0, 0],
+              [0, 0, 0, 1, 0, 0, 0, 0],
+              [0, 0, 0, 0, 0, 0, 1, 0],
+              [0, 0, 0, 0, 0, 1, 0, 0],
+              [0, 0, 0, 0, 0, 0, 0, 0]]
+
 mycrawler = crawler("seed.dat")
 mycrawler.crawl()
 
@@ -15,13 +24,14 @@ myIndexer = indexer(mycrawler.getFinalUrlset())
 myIndexer.runIndexing()
 myIndexer.outputIndexToFile()
 
-index = myIndexer.indexDict
+index = myIndexer.getIndexMatrix()
 myScoring = scoring(len(mycrawler.getFinalUrlset()), index)
 
-again = "j"
-while again == "j":
-    queryString = input("Suchbegriff(e): ")
-    myScoring.calcScoreForQuery(queryString)
-
-    again = input("Neue Suche? j/n: ")
-    print()
+running = True
+while running:
+    eingabe = input("Nach welchen Wörtern wollen Sie suchen?:\n\t ")
+    if (eingabe == "exit"):
+        running = False
+    else:
+        myScoring.calcScoreForQuery(eingabe, myRank.ranking)
+        print("\n")
